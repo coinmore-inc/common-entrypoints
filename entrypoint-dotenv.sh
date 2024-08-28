@@ -21,8 +21,9 @@ process_env_file() {
 
 # Function to read all .env files in the specified paths
 read_env_files() {
-  IFS=':' read -r -a paths <<< "$1"
-  for path in "${paths[@]}"; do
+  oldIFS="$IFS"
+  IFS=':'
+  for path in "$1"; do
     if [ -d "$path" ]; then
       for filepath in "$path"/*.env; do
         [ -e "$filepath" ] || continue
@@ -32,6 +33,7 @@ read_env_files() {
       process_env_file "$path"
     fi
   done
+  IFS="$oldIFS"
 }
 
 # Read environment variables from .env files in the environment paths
