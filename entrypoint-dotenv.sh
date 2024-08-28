@@ -23,7 +23,7 @@ process_env_file() {
 read_env_files() {
   oldIFS="$IFS"
   IFS=':'
-  for path in "$1"; do
+  for path in $1; do
     if [ -d "$path" ]; then
       for filepath in "$path"/*.env; do
         [ -e "$filepath" ] || continue
