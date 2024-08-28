@@ -7,14 +7,15 @@ DEFAULT_ENV_PATH="$HOME/.env:/etc/.env"
 # Use ENV_PATH environment variable if set, otherwise use default paths
 ENV_PATH="${ENV_PATH:-$DEFAULT_ENV_PATH}"
 
-# Enable automatic export of all variables
-set -a
-
 # Function to process a single .env file
 process_env_file() {
   local filepath="$1"
   if [ -f "$filepath" ]; then
+    set -a
+    # Enable automatic export of all variables
     . "$filepath"
+    # Disable automatic export of all variables
+    set +a
   fi
 }
 
@@ -36,9 +37,5 @@ read_env_files() {
 # Read environment variables from .env files in the environment paths
 read_env_files "$ENV_PATH"
 
-# Disable automatic export of all variables
-set +a
-
 # Execute the given command
 exec "$@"
-
